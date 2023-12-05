@@ -2,7 +2,10 @@ package main;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import components.Account;
 import components.Client;
@@ -12,11 +15,19 @@ import components.SavingsAccount;
 public class Main {
 
 	public static void main(String[] args) {
+		
 		Client[] clients = loadClients(4);
+		System.out.println("---Clients---");
 		displayClients(clients);
-
+		
 		List<Account> accounts = loadAccounts(clients);
+		System.out.println("\n" + "---Accounts---");
 		displayAccounts(accounts);
+		
+		Hashtable<Integer, Account> accountsHashTable = createHashTable(accounts);
+		System.out.println("\n" + "---Hashtable in ascending order of balance---");
+		displayAccountsAscending(accountsHashTable);
+		
 	}
 	
 	//generate clients
@@ -55,5 +66,25 @@ public class Main {
 			accounts.stream()
 			.map(Account::toString)
 			.forEach(System.out::println);
+		}
+		
+		//account hashtable
+		private static Hashtable<Integer, Account> createHashTable(List<Account> accounts) {
+			Hashtable<Integer, Account> accountHashTable = new Hashtable<>();
+			
+			for (Account account : accounts) {
+				accountHashTable.put(account.getAccountNumber(), account);
+			}
+			
+			return accountHashTable;
+		}
+		
+		//display ascending
+		private static void displayAccountsAscending(Hashtable<Integer, Account> accountHash) {
+			Map<Integer, Account> sortedMap = accountHash.entrySet().stream() //seperate Hash for sorted accounts
+					.sorted(Map.Entry.comparingByValue((val1, val2) -> Double.compare(val1.getBalance(), val2.getBalance())))
+					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (entry1, entry2) -> entry1, Hashtable::new));
+			
+			sortedMap.forEach((accountNumber, account) -> System.out.println(account));
 		}
 }
