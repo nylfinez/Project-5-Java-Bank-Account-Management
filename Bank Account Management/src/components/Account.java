@@ -28,8 +28,8 @@ protected static int lastAccountNumber = 20; //initial value available for all i
 	public double getBalance() {
 		return balance;
 	}
-	public void setBalance(double balance) {
-		this.balance = balance;
+	public void setBalance(Flow flow) {
+		//TODO function to update balance
 	}
 
 	public int getAccountNumber() {
