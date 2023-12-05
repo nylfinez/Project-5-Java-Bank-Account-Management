@@ -1,7 +1,7 @@
 package components;
 
 public abstract class Account {
-protected static int lastAccountNumber = 20; //initial value available for all instances
+protected static int lastAccountNumber = 0; //initial value available for all instances
 	
 	protected String label;
 	protected double balance;

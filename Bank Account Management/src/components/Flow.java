@@ -64,4 +64,9 @@ public abstract class Flow {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("%d: %s, ammount: %.2f€, target account:%d, effect: %b, date: %tF", identifier, comment, ammount, targetAccountNumber, effect, date);
+	}
 }
