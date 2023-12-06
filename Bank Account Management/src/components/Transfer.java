@@ -12,4 +12,14 @@ public class Transfer extends Flow {
 		this.issuingAccountNumber = issuingAccountNumber;
 	}
 
+	public int getIssuingAccountNumber() {
+		return issuingAccountNumber;
+	}
+
+	public void setIssuingAccountNumber(int issuingAccountNumber) {
+		this.issuingAccountNumber = issuingAccountNumber;
+	}
+	
+	
+
 }

@@ -8,8 +8,8 @@ import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
 
 import components.Account;
 import components.Client;
@@ -39,6 +39,9 @@ public class Main {
 		Flow[] flows = loadFlows(accounts);
 		System.out.println("\n" + "---Flows---");
 		displayFlows(flows);
+		
+		System.out.println("\n" + "---Updated balances---");
+		updateBalances(accountsHashTable, flows);
 		
 	}
 	
@@ -70,9 +73,7 @@ public class Main {
 				accountsList.add(savingsAccount);
 			}
 			
-			Account[] accounts = accountsList.toArray(new Account[0]);
-			
-			return accounts;
+			return accountsList.toArray(new Account[0]);
 		}
 		
 		/*-----------DISPLAY ACCOUNTS-----------*/
@@ -123,9 +124,7 @@ public class Main {
 			flowsList.add(new Transfer("Transfer of 50€ from account no.1 to account no.2", flowsList.size()+1, 50, accounts[1].getAccountNumber(), false, getDate(currentDate.plusDays(2)), accounts[0].getAccountNumber()));
 			
 			//convert to array
-			Flow[] flows = flowsList.toArray(new Flow[0]);
-			
-			return flows;
+			return flowsList.toArray(new Flow[0]);
 		}
 		
 		/*-----------DISPLAY FLOWS-----------*/
@@ -138,5 +137,21 @@ public class Main {
 		/*-----------TURN LocalDate INTO Date-----------*/
 		private static Date getDate(LocalDate localDate) {
 			return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		}
+		
+		/*-----------UPDATE ALL ACCOUNTS-----------*/
+		public static void updateBalances(Hashtable<Integer, Account> accountHash, Flow[] flows) {
+			for (Flow flow : flows) {
+				accountHash.values().forEach(account -> account.setBalance(flow));
+			}
+			
+			Optional<Account> negativeAccounts = accountHash.values().stream()
+					.filter(account -> account.getBalance() < 0)
+					.findFirst();
+			
+			negativeAccounts.ifPresent(account -> 
+				System.out.println("WARNING! Account: " + account.getAccountNumber() + " has a negative balance"));
+		
+			displayAccountsAscending(accountHash);
 		}
 }

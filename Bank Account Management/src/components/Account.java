@@ -29,7 +29,18 @@ protected static int lastAccountNumber = 0; //initial value available for all in
 		return balance;
 	}
 	public void setBalance(Flow flow) {
-		//TODO function to update balance
+		if (flow instanceof Credit) {
+			this.balance += flow.getAmmount();
+		} else if (flow instanceof Debit) {
+			this.balance -= flow.getAmmount();
+		} else if (flow instanceof Transfer) {
+			Transfer transferFlow = (Transfer) flow;
+			if (this.accountNumber == transferFlow.getTargetAccountNumber()) {
+				this.balance += transferFlow.getAmmount();
+			} else if (this.accountNumber == transferFlow.getIssuingAccountNumber()) {
+				this.balance -= transferFlow.getAmmount();
+			}
+		}
 	}
 
 	public int getAccountNumber() {
