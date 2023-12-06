@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -96,11 +97,10 @@ public class Main {
 		
 		/*-----------DISPLAY ACCOUNTS IN ASCENDING ORDER BY BALANCE-----------*/
 		private static void displayAccountsAscending(Hashtable<Integer, Account> accountHash) {
-			Map<Integer, Account> sortedMap = accountHash.entrySet().stream() //seperate Hash for sorted accounts
-					.sorted(Map.Entry.comparingByValue((val1, val2) -> Double.compare(val1.getBalance(), val2.getBalance())))
-					.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (entry1, entry2) -> entry1, Hashtable::new));
-			
-			sortedMap.forEach((accountNumber, account) -> System.out.println(account));
+			accountHash.entrySet().stream()
+			.sorted(Map.Entry.comparingByValue(Comparator.comparingDouble(Account::getBalance)))
+			.map(Map.Entry::getValue)
+			.forEach(System.out::println);
 		}
 		
 		/*-----------GENERATE FLOWS-----------*/
