@@ -29,9 +29,9 @@ protected static int lastAccountNumber = 0; //initial value available for all in
 		return balance;
 	}
 	public void setBalance(Flow flow) {
-		if (flow instanceof Credit) {
+		if (flow instanceof Credit && this.accountNumber == flow.getTargetAccountNumber()) {
 			this.balance += flow.getAmmount();
-		} else if (flow instanceof Debit) {
+		} else if (flow instanceof Debit && this.accountNumber == flow.getTargetAccountNumber()) {
 			this.balance -= flow.getAmmount();
 		} else if (flow instanceof Transfer) {
 			Transfer transferFlow = (Transfer) flow;
